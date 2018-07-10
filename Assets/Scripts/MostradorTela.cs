@@ -23,7 +23,7 @@ public class MostradorTela : MonoBehaviour {
 	void Update () {
 
         //texto com a quantidade de dinheiro e taxa de dinheiros
-        textoDinheiro.text = PropriedadesDinheiro.abreviaNumero(propriedadesDinheiro.dinheiro) + " " + PropriedadesDinheiro.contagem(propriedadesDinheiro.dinheiro) + " reais";
+        textoDinheiro.text = PropriedadesDinheiro.abreviaNumero(propriedadesDinheiro.dinheiro) + " " + PropriedadesDinheiro.contagemDinheiroTotal(propriedadesDinheiro.dinheiro) + " reais";
         textoTaxaDinheiros.text = PropriedadesDinheiro.abreviaNumero(propriedadesDinheiro.getTaxaGanhoTotal()) + " " + 
             PropriedadesDinheiro.contagem(propriedadesDinheiro.getTaxaGanhoTotal()) + " reais por segundo";
     }

@@ -7,10 +7,10 @@ public class PropriedadesDinheiro : MonoBehaviour
 
     //Variaveis
     //Quantidade de dinheiro
-    public ulong dinheiro = 0UL;
+    public float dinheiro = 0f;
 
     //preço do botão
-    public ulong precoBotao = 1UL;
+    public float precoBotao = 1f;
 
     //incremento na taxa dado pelo botão
     public float incrementoTaxaBotao = 10.0F;
@@ -23,9 +23,6 @@ public class PropriedadesDinheiro : MonoBehaviour
 
     //Incremento no clique do mouse
     public float incrementoClick = 1.0F;
-
-    //Variavel usada na funcao atualizaDinheiro
-    private float incremento = 0.0F;
 
     //Testes
     void Start()
@@ -44,40 +41,30 @@ public class PropriedadesDinheiro : MonoBehaviour
 
         float taxaTotal = taxaGanho + taxaGanhoBonus;
 
-        if (incremento < 1)
-        {
-            incremento += taxaTotal * Time.deltaTime;
-        }
-        else
-        {
-            incremento = taxaTotal * Time.deltaTime;
-        }
-
-        //soh incrementa 'dinheiro' se 'incremento' for maior que 1 
-        dinheiro += (ulong) System.Math.Truncate(incremento);
+        dinheiro += taxaTotal * Time.deltaTime;
     }
 
     //incrementa o valor de 'dinherio' de acordo com 'aumento'
-    private void aumentaDinheiro(ulong aumento)
+    private void aumentaDinheiro(float aumento)
     {
         dinheiro += aumento;
     }
 
     //diminui o valor de 'dinherio' de acordo com 'decremento'
-    private void diminuiDinheiro(ulong decremento)
+    private void diminuiDinheiro(float decremento)
     {
 
         dinheiro -= decremento;
     }
 
     //incrementa o valor de 'taxaGanho' de acordo com 'aumento'
-    private void aumentaTaxa(ulong aumento)
+    private void aumentaTaxa(float aumento)
     {
         taxaGanho += aumento;
     }
 
     //diminui o valor de 'taxaGanho' de acordo com 'decremento'
-    private void diminuiTaxa(ulong decremento)
+    private void diminuiTaxa(float decremento)
     {
         taxaGanho -= decremento;
     }
@@ -85,7 +72,7 @@ public class PropriedadesDinheiro : MonoBehaviour
     //incrementa dinheiro no valor 'incrementoClick'
     public void aumentaDinheiroNoClick()
     {
-        aumentaDinheiro( (ulong) Mathf.RoundToInt(incrementoClick));
+        aumentaDinheiro( Mathf.RoundToInt(incrementoClick));
     }
 
     //define bonus para a taxa de ganho de dinheiro por segundo (bonus eh um fator de 'taxaGanho')
@@ -98,7 +85,7 @@ public class PropriedadesDinheiro : MonoBehaviour
     //define bonus de dinheiro baseado em 'taxaGanho'
     public void acrescentaBonusDeDinherio(float fator)
     {
-        aumentaDinheiro((ulong)(taxaGanho * fator));
+        aumentaDinheiro((taxaGanho * fator));
     }
 
     public void retiraTaxaBonus()
@@ -113,7 +100,7 @@ public class PropriedadesDinheiro : MonoBehaviour
     }
 
     //define o "sufixo" que sera dado ao numero (milhão, bilhão, trilhão)
-    public static string contagem(ulong numero)
+    public static string contagemDinheiroTotal(float numero)
     {
 
         if (numero >= 1000000000000000000)
@@ -161,9 +148,7 @@ public class PropriedadesDinheiro : MonoBehaviour
         return "";
     }
 
-    //coloca o numero em um formato igual ao do cookie clicker, contendo no maximo os 6 algarismos mais significativos
-    //destes algarismos mais significativos, os 3 menos significativos ficam separados do resto por um ponto se o numero for maior ou igual a mil
-    //numeros menores que mil nao sao alterados
+    
     public static string abreviaNumero(ulong numero)
     {
         string stringNumero = numero.ToString();
@@ -190,18 +175,20 @@ public class PropriedadesDinheiro : MonoBehaviour
         return stringNumero;
     }
 
-    //igual a sobrecarga de 'ulong', mas para numeros menores que mil, exibe tambem o primeiro valor decimal
+    //coloca o numero em um formato igual ao do cookie clicker, contendo no maximo os 6 algarismos mais significativos
+    //destes algarismos mais significativos, os 3 menos significativos ficam separados do resto por um ponto se o numero for maior ou igual a mil
+    //para numeros menores que mil, exibe tambem o primeiro valor decimal
     public static string abreviaNumero(float numero)
     {
         string stringNumero;
 
         if (numero < 1000)
         {
-            stringNumero = numero.ToString("F1");
+            stringNumero = numero.ToString("F2"); //string do numero com duas casas decimais
         }
         else
         {
-            stringNumero = numero.ToString("F0");
+            stringNumero = numero.ToString("F0"); //string do numero sem casas decimais
 
             if (stringNumero.Length % 3 == 1)
             {
