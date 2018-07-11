@@ -14,6 +14,13 @@ public class ControleBotaoConstrucao : MonoBehaviour {
     //index da construcao representada pelo botao
     public int index;
 
+    //textos do botao
+    //ordem:
+    //index 0 -> quantidade
+    //index 1 -> nome
+    //index 2 -> preco
+    Text[] textos;
+
     // Use this for initialization
     void Start () {
 
@@ -25,11 +32,16 @@ public class ControleBotaoConstrucao : MonoBehaviour {
 
         //Adiciona a funcao que sera usada no click
         GetComponent<Button>().onClick.AddListener(executaNoClick);
+
+        //Inicializa vetor com textos
+        textos = GetComponentsInChildren<Text>();
+
+        //atualiza dinheiro
+        atualizaTexto();
     }
 	
 	// Update is called once per frame
 	void Update () {
-		
 	}
 
     private void executaNoClick()
@@ -43,19 +55,27 @@ public class ControleBotaoConstrucao : MonoBehaviour {
         {
             vendeConstrucao();
         }
+
+        //atualiza texto
+        atualizaTexto();
     }
 
     //compra construcao caso tenha dinheiro o suficiente
     private void compraConstrucao()
     {
-        //reduz dinheiro caso seja o suficiente
-        propriedadesDinheiro.realizaCompra(propriedadesConstrucoes.precosCompra[index]);
+        float preco = propriedadesConstrucoes.precosCompra[index];
 
-        //aumenta quantidade de construcoes e atualiza seu preco de venda e compra
-        propriedadesConstrucoes.compraConstrucao(index);
+        if (preco <= propriedadesDinheiro.dinheiro)
+        {
+            //reduz dinheiro caso seja o suficiente
+            propriedadesDinheiro.realizaCompra(propriedadesConstrucoes.precosCompra[index]);
 
-        //atualiza taxa de ganho de dinheiro por segundo
-        propriedadesDinheiro.calculaTaxaGanho();
+            //aumenta quantidade de construcoes e atualiza seu preco de venda e compra
+            propriedadesConstrucoes.compraConstrucao(index);
+
+            //atualiza taxa de ganho de dinheiro por segundo
+            propriedadesDinheiro.calculaTaxaGanho();
+        }
     }
 
     //vende construcao
@@ -72,5 +92,28 @@ public class ControleBotaoConstrucao : MonoBehaviour {
             //atualiza taxa de ganho de dinheiro por segundo
             propriedadesDinheiro.calculaTaxaGanho();
         }
+    }
+
+    //atualiza texto contido no botao
+    private void atualizaTexto()
+    {
+        float preco;
+
+        if (propriedadesConstrucoes.modo == "compra")
+        {
+            preco = propriedadesConstrucoes.precosCompra[index];
+        }
+        else if (propriedadesConstrucoes.modo == "venda")
+        {
+            preco = propriedadesConstrucoes.precosVenda[index];
+        }
+        else
+        {
+            preco = 0;
+        }
+
+        textos[0].text = propriedadesConstrucoes.quantidadesConstrucoes[index].ToString();
+
+        textos[2].text = PropriedadesDinheiro.abreviaNumero(preco) + " " + PropriedadesDinheiro.contagem(preco);
     }
 }

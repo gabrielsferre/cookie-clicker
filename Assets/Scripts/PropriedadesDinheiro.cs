@@ -9,9 +9,6 @@ public class PropriedadesDinheiro : MonoBehaviour
     //Quantidade de dinheiro
     public float dinheiro = 0f;
 
-    //preço do botão
-    public float precoBotao = 1f;
-
     //incremento na taxa dado pelo botão
     public float incrementoTaxaBotao = 10.0F;
 
@@ -79,9 +76,9 @@ public class PropriedadesDinheiro : MonoBehaviour
     {
         taxaGanho = 0;
 
-        foreach (float producao in propriedadesConstrucoes.producaoConstrucoes)
+        for(int i = 0; i < PropriedadesConstrucoes.numeroDeConstrucoes; i++)
         {
-            taxaGanho += producao;
+            taxaGanho += propriedadesConstrucoes.producaoConstrucoes[i]*propriedadesConstrucoes.quantidadesConstrucoes[i];
         }
     }
 
@@ -94,7 +91,7 @@ public class PropriedadesDinheiro : MonoBehaviour
     //realiza a compra de uma construcao ou upgrade
     public void realizaCompra( float preco )
     {
-        if( preco < dinheiro )
+        if( preco <= dinheiro )
         {
             diminuiDinheiro(preco);
         }
@@ -171,33 +168,6 @@ public class PropriedadesDinheiro : MonoBehaviour
             return "mil";
 
         return "";
-    }
-
-    
-    public static string abreviaNumero(ulong numero)
-    {
-        string stringNumero = numero.ToString();
-
-        if (stringNumero.Length >= 4)
-        {
-
-            if (stringNumero.Length % 3 == 1)
-            {
-                stringNumero = stringNumero.Substring(0, 1) + "." + stringNumero.Substring(1, 3);
-            }
-
-            else if (stringNumero.Length % 3 == 2)
-            {
-                stringNumero = stringNumero.Substring(0, 2) + "." + stringNumero.Substring(2, 3);
-            }
-
-            else if (stringNumero.Length % 3 == 0)
-            {
-                stringNumero = stringNumero.Substring(0, 3) + "." + stringNumero.Substring(3, 3);
-            }
-        }
-
-        return stringNumero;
     }
 
     //coloca o numero em um formato igual ao do cookie clicker, contendo no maximo os 6 algarismos mais significativos

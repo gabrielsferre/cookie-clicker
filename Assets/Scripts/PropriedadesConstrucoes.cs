@@ -5,7 +5,7 @@ using UnityEngine;
 public class PropriedadesConstrucoes : MonoBehaviour {
 
     //numero de tipos de construcoes existentes no jogo
-    private const int numeroDeConstrucoes = 7;
+    public const int numeroDeConstrucoes = 7;
 
     //razao entre o preco de compra e preco de venda das construcoes
     private const float razaoCompraVenda = 2.3f;
@@ -14,10 +14,10 @@ public class PropriedadesConstrucoes : MonoBehaviour {
     private const float aumentoPreco = 0.15f;
 
     //array com precos de compra iniciais das construcoes
-    private float[] precosIniciais = { 0f, 0f, 0f, 0f, 0f, 0f, 0f };
+    private float[] precosIniciais = { 10f, 100f, 1000f, 10000f, 100000f, 1000000f, 10000000f };
 
     //array com a producao inicial das construcoes
-    private float[] producaoInicial = { 0, 0, 0, 0, 0, 0, 0 };
+    private float[] producaoInicial = { 10f, 100f, 1000f, 10000f, 100000f, 1000000f, 10000000f };
 
     //array com quantidade que o jogador possui de cada construcao
     public int[] quantidadesConstrucoes = new int[numeroDeConstrucoes];
@@ -29,39 +29,48 @@ public class PropriedadesConstrucoes : MonoBehaviour {
     public float[] precosVenda = new float[numeroDeConstrucoes];
 
     //array com a taxa de aumento de dinheiro de cada construcao
-    public float[] producaoConstrucoes = new float[numeroDeConstrucoes];
+    public float[] producaoConstrucoes = { 10f, 100f, 1000f, 10000f, 100000f, 1000000f, 10000000f };
 
     //array com a producao total ao longo do jogo de cada construcao
     public float[] producaoTotalConstrucoes = new float[numeroDeConstrucoes];
 
     //define modo: "venda" ou "compra"
-    public string modo = "venda";
+    public string modo = "compra";
+
+    private void Awake()
+    {
+        //atualiza preco de compra
+        for (int i = 0; i < numeroDeConstrucoes; i++)
+        {
+            precosCompra[i] = calculaPrecoCompra(i);
+        }
+    }
 
     // Use this for initialization
     void Start () {
-		
-	}
+       
+    }
 	
 	// Update is called once per frame
 	void Update () {
-		
+
         //incrementa producao total de cada construcao
-        for( int i = 0; i < numeroDeConstrucoes; i++ )
+        for (int i = 0; i < numeroDeConstrucoes; i++)
         {
             atualizaDinheiro(i);
         }
-	}
+    }
 
-    //incrementa dinheiro que a construcao na posicao "index" do array produz
+    //incrementa dinheiro que a construcao na posicao "index" do array produziu
     private void atualizaDinheiro( int index )
     {
-        producaoTotalConstrucoes[index] += producaoConstrucoes[index] * Time.deltaTime;
+        producaoTotalConstrucoes[index] += quantidadesConstrucoes[index]*producaoConstrucoes[index] * Time.deltaTime;
     }
 
     //calcula preco de compra da construcao na posicao "index" do array
     private float calculaPrecoCompra( int index )
     {
-        return precosIniciais[index] * Mathf.Pow(1 + aumentoPreco, quantidadesConstrucoes[index] - 1);
+        return precosIniciais[index] * Mathf.Pow(1 + aumentoPreco, quantidadesConstrucoes[index]);
     }
 
     //calcula preco de venda da construcao
