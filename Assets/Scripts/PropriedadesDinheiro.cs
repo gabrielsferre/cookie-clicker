@@ -24,9 +24,14 @@ public class PropriedadesDinheiro : MonoBehaviour
     //Incremento no clique do mouse
     public float incrementoClick = 1.0F;
 
+    //script que controla as construcoes
+    private PropriedadesConstrucoes propriedadesConstrucoes;
+
     //Testes
     void Start()
     {
+        //inicializa propriedadesConstrucoes
+        propriedadesConstrucoes = GameObject.FindGameObjectWithTag("propriedadesConstrucoes").GetComponent<PropriedadesConstrucoes>();
     }
 
     // Update is called once per frame
@@ -45,7 +50,7 @@ public class PropriedadesDinheiro : MonoBehaviour
     }
 
     //incrementa o valor de 'dinherio' de acordo com 'aumento'
-    private void aumentaDinheiro(float aumento)
+    public void aumentaDinheiro(float aumento)
     {
         dinheiro += aumento;
     }
@@ -69,10 +74,30 @@ public class PropriedadesDinheiro : MonoBehaviour
         taxaGanho -= decremento;
     }
 
+    //calcula o valor da taxa de ganho
+    public void calculaTaxaGanho()
+    {
+        taxaGanho = 0;
+
+        foreach (float producao in propriedadesConstrucoes.producaoConstrucoes)
+        {
+            taxaGanho += producao;
+        }
+    }
+
     //incrementa dinheiro no valor 'incrementoClick'
     public void aumentaDinheiroNoClick()
     {
         aumentaDinheiro( Mathf.RoundToInt(incrementoClick));
+    }
+
+    //realiza a compra de uma construcao ou upgrade
+    public void realizaCompra( float preco )
+    {
+        if( preco < dinheiro )
+        {
+            diminuiDinheiro(preco);
+        }
     }
 
     //define bonus para a taxa de ganho de dinheiro por segundo (bonus eh um fator de 'taxaGanho')

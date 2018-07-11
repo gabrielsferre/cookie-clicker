@@ -20,19 +20,22 @@ public class PropriedadesConstrucoes : MonoBehaviour {
     private float[] producaoInicial = { 0, 0, 0, 0, 0, 0, 0 };
 
     //array com quantidade que o jogador possui de cada construcao
-    private int[] quantidadesConstrucoes = new int[numeroDeConstrucoes];
+    public int[] quantidadesConstrucoes = new int[numeroDeConstrucoes];
 
     //array com preco de compra das construcoes
-    private float[] precosCompra = new float[numeroDeConstrucoes];
+    public float[] precosCompra = new float[numeroDeConstrucoes];
 
     //array com preco de venda das construcoes
-    private float[] precosVenda = new float[numeroDeConstrucoes];
+    public float[] precosVenda = new float[numeroDeConstrucoes];
 
     //array com a taxa de aumento de dinheiro de cada construcao
-    private float[] producaoConstrucoes = new float[numeroDeConstrucoes];
+    public float[] producaoConstrucoes = new float[numeroDeConstrucoes];
 
     //array com a producao total ao longo do jogo de cada construcao
-    private float[] producaoTotalConstrucoes = new float[numeroDeConstrucoes];
+    public float[] producaoTotalConstrucoes = new float[numeroDeConstrucoes];
+
+    //define modo: "venda" ou "compra"
+    public string modo = "venda";
 
     // Use this for initialization
     void Start () {
@@ -68,7 +71,7 @@ public class PropriedadesConstrucoes : MonoBehaviour {
     }
 
     //aumenta quantidade de construcoes e atualiza seu preco de venda e compra
-    private void compraConstrucao( int index )
+    public void compraConstrucao( int index )
     {
         quantidadesConstrucoes[index]++;
         precosCompra[index] = calculaPrecoCompra(index);
@@ -76,7 +79,7 @@ public class PropriedadesConstrucoes : MonoBehaviour {
     }
 
     //diminui quantidade de construcoes e atualiza seu preco de venda e compra
-    private void vendaConstrucao(int index)
+    public void vendeConstrucao(int index)
     {
         quantidadesConstrucoes[index]--;
         precosCompra[index] = calculaPrecoCompra(index);
