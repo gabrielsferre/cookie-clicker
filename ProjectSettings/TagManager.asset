@@ -12,6 +12,7 @@ TagManager:
   - popUpCanvas
   - quadrado
   - propriedadesConstrucoes
+  - propriedadesUpgrades
   layers:
   - Default
   - TransparentFX

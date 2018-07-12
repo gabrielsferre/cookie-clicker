@@ -34,10 +34,13 @@ public class PropriedadesConstrucoes : MonoBehaviour {
     //array com a producao total ao longo do jogo de cada construcao
     public float[] producaoTotalConstrucoes = new float[numeroDeConstrucoes];
 
+    //script que controla os upgrades
+    private PropriedadesUpgrades propriedadesUpgrades;
+
     //define modo: "venda" ou "compra"
     public string modo = "compra";
 
-    private void Awake()
+    void Awake()
     {
         //atualiza preco de compra
         for (int i = 0; i < numeroDeConstrucoes; i++)
@@ -48,7 +51,15 @@ public class PropriedadesConstrucoes : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-       
+
+        //inicializa propriedadesUpgrades
+        propriedadesUpgrades = GameObject.FindGameObjectWithTag("propriedadesUpgrades").GetComponent<PropriedadesUpgrades>();
+
+        //atualiza a producao de todas as construcoes
+        for( int i = 0; i < numeroDeConstrucoes; i++)
+        {
+            atualizaProducao(i);
+        }
     }
 	
 	// Update is called once per frame
@@ -93,5 +104,21 @@ public class PropriedadesConstrucoes : MonoBehaviour {
         quantidadesConstrucoes[index]--;
         precosCompra[index] = calculaPrecoCompra(index);
         precosVenda[index] = calculaPrecoVenda(index);
+    }
+
+    //atualiza a producao de uma certa construcao
+    public void atualizaProducao(int index)
+    {
+        //fator que irah multiplicar a producao inicial da construcao
+        int fator = 1;
+
+        //percorre os upgrades da construcao
+        for (int i = 0; i < PropriedadesUpgrades.numeroDeCoresConstrucoes; i++)
+        {
+            //multiplica fator por dois se o upgrade estiver ativado
+            fator *= (propriedadesUpgrades.upgradesConstrucoes[index, i]) ? 2 : 1;
+        }
+
+        producaoConstrucoes[index] = producaoInicial[index] * fator;
     }
 }

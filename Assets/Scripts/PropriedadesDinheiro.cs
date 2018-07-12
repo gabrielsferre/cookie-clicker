@@ -24,11 +24,20 @@ public class PropriedadesDinheiro : MonoBehaviour
     //script que controla as construcoes
     private PropriedadesConstrucoes propriedadesConstrucoes;
 
+    //script que controla os upgrades
+    private PropriedadesUpgrades propriedadesUpgrades;
+
     //Testes
     void Start()
     {
         //inicializa propriedadesConstrucoes
         propriedadesConstrucoes = GameObject.FindGameObjectWithTag("propriedadesConstrucoes").GetComponent<PropriedadesConstrucoes>();
+
+        //inicializa propriedadesUpgrades
+        propriedadesUpgrades = GameObject.FindGameObjectWithTag("propriedadesUpgrades").GetComponent<PropriedadesUpgrades>();
+
+        //atualiza a taxa de ganho
+        calculaTaxaGanho();
     }
 
     // Update is called once per frame
@@ -71,14 +80,22 @@ public class PropriedadesDinheiro : MonoBehaviour
         taxaGanho -= decremento;
     }
 
-    //calcula o valor da taxa de ganho
+    //recalcula o valor da taxa de ganho a partir das construcoes e upgrades
     public void calculaTaxaGanho()
     {
         taxaGanho = 0;
 
+        //contribuicao das construcoes
         for(int i = 0; i < PropriedadesConstrucoes.numeroDeConstrucoes; i++)
         {
             taxaGanho += propriedadesConstrucoes.producaoConstrucoes[i]*propriedadesConstrucoes.quantidadesConstrucoes[i];
+        }
+
+        //contribuicao dos upgrades
+        for(int i = 0; i < PropriedadesUpgrades.numeroAumentoTaxa; i++)
+        {
+            //aumenta taxa ganho de uma certa porcentagem caso o jogador possua o update
+            taxaGanho *= (propriedadesUpgrades.upgradesAumentoTaxa[i]) ? 1 + propriedadesUpgrades.precoAumentosTaxa[i] : 1;
         }
     }
 

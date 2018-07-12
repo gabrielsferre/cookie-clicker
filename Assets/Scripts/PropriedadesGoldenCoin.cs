@@ -13,8 +13,11 @@ public class PropriedadesGoldenCoin : MonoBehaviour {
     //fator que multiplica a variavel 'taxaGanho' da classe "PropriedadesDinheiro" para calcular o bonus de dinheiro
     public float fatorBonusDinheiro = 10F*60F;
 
-    //probabilidade da golden coin aparecer em um fixed frame
-    private float probabilidade = 0.3F;
+    //probabilidade inicial da golden coin aparecer em um fixed frame
+    private const float probabilidadeInicial = 0.3f;
+
+    //probabilidade da golden coin aparecer em um fixed frame apos receber upgrades
+    private float probabilidade = probabilidadeInicial;
 
     //menor intervalo entre duas golden coins em segundos
     private float intervaloMinimo = 5F;
@@ -31,14 +34,25 @@ public class PropriedadesGoldenCoin : MonoBehaviour {
     //probabilidade do update ser aumento da taxa de ganho por segundo
     //private float probabilidadeTaxa = 0.5F;
 
+    //script que controla os upgrades
+    private PropriedadesUpgrades propriedadesUpgrades;
+
     //prefab da goldenCoin
     public GameObject goldenCoinPrefab;
 
     //GameObject da golden coin
     private GameObject goldenCoin;
 
+
 	// Use this for initialization
 	void Start () {
+
+        //inicializa propriedadesUpgrades
+        propriedadesUpgrades = GameObject.FindGameObjectWithTag("propriedadesUpgrades").GetComponent<PropriedadesUpgrades>();
+
+        //atualiza probabilidade da golden coin aparecer
+        calculaProbabilidade();
+
         //Usa 'checaSurgimento()' a cada 'intervaloMinimo' segundos
         InvokeRepeating("checaSurgimento", 0, intervaloMinimo);
 	}
@@ -122,7 +136,18 @@ public class PropriedadesGoldenCoin : MonoBehaviour {
         }
     }
 
+    //recalcula o valor da probabilidade da golden coin aparecer em um fixed frame
+    public void calculaProbabilidade()
+    {
+        probabilidade = probabilidadeInicial;
 
+        //contribuicao dos upgrades
+        for (int i = 0; i < PropriedadesUpgrades.numeroFrequenciaGoldenCoin; i++)
+        {
+            //multiplica probabilidade caso o jogador possua o update
+            probabilidade *= (propriedadesUpgrades.upgradesFrequenciaGoldenCoin[i]) ? 1 + propriedadesUpgrades.precoAumentosFrequenciaGoldenCoin[i] : 1;
+        }
+    }
 
     //desabilita o aparecimento de golden coins
     public void iniciaBonusTaxa()

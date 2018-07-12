@@ -69,7 +69,7 @@ public class ControleMiniBurguer : MonoBehaviour {
         Sprite[] arraySprites = Resources.LoadAll<Sprite>(caminho);
 
         //Escolhe sprite de miniburguer aleatoria
-        spriteRenderer.sprite = Resources.LoadAll<Sprite>(caminho)[Random.Range(0, arraySprites.Length)];
+        spriteRenderer.sprite = arraySprites[Random.Range(0, arraySprites.Length)];
     }
     
     private void atribuiVelocidadeAleatoria()
