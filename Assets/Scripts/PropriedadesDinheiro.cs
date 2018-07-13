@@ -9,16 +9,16 @@ public class PropriedadesDinheiro : MonoBehaviour
     //Quantidade de dinheiro
     public float dinheiro = 0f;
 
-    //incremento na taxa dado pelo botão
-    public float incrementoTaxaBotao = 10.0F;
-
     //Taxa de ganho de dinheiro por segundo
     public float taxaGanho = 1.0F;
 
     //Taxa de ganho por segundo bonus
     public float taxaGanhoBonus = 0.0F;
 
-    //Incremento no clique do mouse
+    //Incremento inicial do clique do mouse
+    public float incrementoClickInicial = 1.0F;
+
+    //Incremento do clique do mouse
     public float incrementoClick = 1.0F;
 
     //script que controla as construcoes
@@ -95,7 +95,23 @@ public class PropriedadesDinheiro : MonoBehaviour
         for(int i = 0; i < PropriedadesUpgrades.numeroAumentoTaxa; i++)
         {
             //aumenta taxa ganho de uma certa porcentagem caso o jogador possua o update
-            taxaGanho *= (propriedadesUpgrades.upgradesAumentoTaxa[i]) ? 1 + propriedadesUpgrades.precoAumentosTaxa[i] : 1;
+            taxaGanho *= (propriedadesUpgrades.upgradesAumentoTaxa[i]) ? 1 + propriedadesUpgrades.aumentosTaxa[i] : 1;
+        }
+
+        //atualiza o valor do dinheiro ganho no clique
+        calculaIncrementoClick();
+    }
+
+    //recalcula o valor do dinheiro ganho no clique
+    public void calculaIncrementoClick()
+    {
+        incrementoClick = incrementoClickInicial;
+
+        //contribuicao dos upgrades
+        for (int i = 0; i < PropriedadesUpgrades.numeroAumentoClique; i++)
+        {
+            //aumenta o incremento do clique de uma certa porcentagem da taxa de ganho caso o jogador possua o update
+            incrementoClick += (propriedadesUpgrades.upgradesAumentoClique[i]) ? taxaGanho*propriedadesUpgrades.aumentosClique[i] : 0;
         }
     }
 

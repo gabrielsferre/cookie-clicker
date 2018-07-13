@@ -54,5 +54,5 @@ MonoBehaviour:
   fatorBonusTaxa: 7
   tempoBonusTaxa: 5
   fatorBonusDinheiro: 600
-  goldenCoinPrefab: {fileID: 1572557753529830, guid: 21937d6149f1f6248b41272631abe906,
+  goldenCoinPrefab: {fileID: 1452401799090386, guid: 21937d6149f1f6248b41272631abe906,
     type: 2}
