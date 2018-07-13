@@ -13,6 +13,7 @@ TagManager:
   - quadrado
   - propriedadesConstrucoes
   - propriedadesUpgrades
+  - panelUpgrades
   layers:
   - Default
   - TransparentFX
